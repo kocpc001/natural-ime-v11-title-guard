@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "自然輸入法 V11 標題相容修正",
+  "version": "0.1.0",
+  "description": "縮短 X 與 Threads 過長的分頁標題，避開 V11 讀取視窗標題時的緩衝區錯誤。",
+  "content_scripts": [{
+    "matches": ["https://x.com/*", "https://*.x.com/*", "https://twitter.com/*", "https://*.twitter.com/*", "https://threads.com/*", "https://*.threads.com/*", "https://threads.net/*", "https://*.threads.net/*"],
+    "js": ["title-guard.js"],
+    "run_at": "document_start",
+    "all_frames": false
+  }]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "natural-ime-v11-title-guard",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Long page-title workaround for Natural Chinese IME V11",
+  "license": "MIT",
+  "engines": { "node": "^20.19.0 || ^22.13.0 || >=24.0.0" },
+  "scripts": {
+    "test": "node --check extension/title-guard.js && node --test tests/*.test.cjs",
+    "package": "node scripts/package.cjs"
+  },
+  "devDependencies": { "jsdom": "29.1.1" },
+  "repository": { "type": "git", "url": "https://github.com/kocpc001/natural-ime-v11-title-guard.git" }
+}
