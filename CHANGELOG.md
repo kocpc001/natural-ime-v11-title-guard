@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.2.0 — 2026-10-03
+
+- Add a Telegram Web K composition guard: preserve the IME's whitespace placeholder when the page tries to clear an apparently empty editor during composition.
+- Native V11 testing confirmed four successful empty-editor Chinese commits without an English or numeric prefix. V12/V13 have not been separately tested for this fix.
+- Add an experimental Gmail Gemini input filter for the Traditional Chinese prompt: suppress only the composing-space input notification while allowing the native edit and real text to proceed.
+- Native V11 testing confirmed seven Chinese-text input events after filtering, including repeated empty-editor tests; the user reports normal input. Long-term intermittent behavior and other UI languages remain unverified.
+- Expand content-script scope to Telegram Web K and Gmail; no additional extension API permissions, input logging, clipboard access, storage or network requests.
+- Update privacy documentation and add regression tests for composition, normal clearing, other fields and dynamically replaced editors.
+
 ## 0.1.1 — 2026-10-03
 
 - Rename the displayed project and extension title to cover Natural IME V11–V13.

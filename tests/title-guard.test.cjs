@@ -123,7 +123,7 @@ test('manifest limits execution to named HTTPS sites and requests no extra APIs'
   assert.equal(manifest.permissions, undefined);
   assert.equal(manifest.host_permissions, undefined);
   assert.equal(manifest.background, undefined);
-  assert.equal(manifest.content_scripts.length, 1);
+  assert.equal(manifest.content_scripts.length, 3);
   const script = manifest.content_scripts[0];
   assert.equal(script.run_at, 'document_start');
   assert.equal(script.all_frames, false);
@@ -131,4 +131,16 @@ test('manifest limits execution to named HTTPS sites and requests no extra APIs'
   for (const pattern of script.matches) {
     assert.match(pattern, /^https:\/\/(?:\*\.)?(?:x\.com|twitter\.com|threads\.com|threads\.net)\/\*$/);
   }
+  const telegram = manifest.content_scripts[1];
+  assert.deepEqual(telegram.matches, ['https://web.telegram.org/k/*']);
+  assert.deepEqual(telegram.js, ['telegram-composition-guard.js']);
+  assert.equal(telegram.world, 'MAIN');
+  assert.equal(telegram.run_at, 'document_start');
+  assert.equal(telegram.all_frames, false);
+  const gmail = manifest.content_scripts[2];
+  assert.deepEqual(gmail.matches, ['https://mail.google.com/*']);
+  assert.deepEqual(gmail.js, ['gmail-composition-filter.js']);
+  assert.equal(gmail.world, 'MAIN');
+  assert.equal(gmail.run_at, 'document_start');
+  assert.equal(gmail.all_frames, false);
 });

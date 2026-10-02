@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "自然輸入法 V11～V13 標題相容修正",
-  "version": "0.1.1",
-  "description": "縮短 X 與 Threads 過長的分頁標題，處理自然輸入法 V11～V13 的長視窗標題相容問題。",
+  "name": "自然輸入法 V11～V13 網頁相容修正",
+  "version": "0.2.0",
+  "description": "處理 X／Threads 的長標題及 Telegram Web K 組字清空問題，並提供 Gmail Gemini 的初步組字相容修正。",
   "content_scripts": [
     {
       "matches": [
@@ -20,6 +20,20 @@
       ],
       "run_at": "document_start",
       "all_frames": false
+    },
+    {
+      "matches": ["https://web.telegram.org/k/*"],
+      "js": ["telegram-composition-guard.js"],
+      "run_at": "document_start",
+      "all_frames": false,
+      "world": "MAIN"
+    },
+    {
+      "matches": ["https://mail.google.com/*"],
+      "js": ["gmail-composition-filter.js"],
+      "run_at": "document_start",
+      "all_frames": false,
+      "world": "MAIN"
     }
   ]
 }

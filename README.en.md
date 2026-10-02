@@ -1,8 +1,8 @@
-# Natural IME V11–V13 Title Guard
+# Natural IME V11–V13 Web Compatibility Guard
 
 [繁體中文](README.md) · [Downloads](https://github.com/kocpc001/natural-ime-v11-title-guard/releases/latest)
 
-A small Manifest V3 extension that shortens long page titles on X, Twitter, and Threads to work around a long-window-title compatibility problem in Natural Chinese IME. Keep typing in the original editor with V11–V13.
+A small Manifest V3 extension that shortens long page titles on X, Twitter, and Threads to work around a long-window-title compatibility problem in Natural Chinese IME. Keep typing in the original editor with V11–V13. Version 0.2.0 adds Telegram Web K composition protection and an experimental Gmail Gemini filter.
 
 **Known affected versions: V11, V12, and V13.** The user has confirmed the same problem in these versions and reports that this workaround resolved input problems on X and Threads. The published binary and crash-dump analysis covers V11; V12 and V13 are supported by the user's testing reports, without separate binary analysis of those versions.
 
@@ -14,17 +14,15 @@ The guard caps long document titles at 180 UTF-16 units, leaving room for browse
 
 See the [detailed diagnosis in Traditional Chinese](docs/diagnosis.zh-TW.md). The repository/archive names and visible `V11` title suffix retain the original naming; they do not restrict the workaround to V11.
 
-## Known unresolved issue: Gemini in Gmail's side panel
+## Telegram Web K: composition cleanup
 
-**Zhuyin input in Gmail's Gemini prompt intermittently stops working. The cause is unknown and no fix is available in this project.** Ordinary Gmail editors continue working. Gemini may ignore all Zhuyin input or drop part of a syllable, then temporarily recover. English input still works during the failure. For example, typing ㄕㄨ for 「輸」 may leave only ㄨ and produce 「屋」.
+Tracing identified Telegram's input handler calling `replaceChildren()` when the editor contains only whitespace, deleting V11's composition placeholder. An English character or digit prevents this empty-editor cleanup. The new guard preserves the placeholder only while composing, then allows normal clearing. Native V11 testing confirmed four successful empty-editor Chinese commits. V12/V13 and Telegram Web A have not been separately tested.
 
-Passive monitoring with V11 captured keystrokes reaching the editor while composition content was removed and composition restarted on the next keystroke. This is a diagnostic lead, not an established root cause. The observations differ from the long-title crash on X and Threads.
+## Gmail Gemini: experimental workaround
 
-The extension handles long titles on X, Twitter, and Threads only; it does not run on Gmail or fix Gemini. Temporary recovery after a reload or switching to English does not establish a fix. See [known issues in Traditional Chinese](docs/known-issues.zh-TW.md).
+Gmail's Gemini prompt intermittently ignored Zhuyin or lost part of a syllable. Tracing identified Gmail/Gemini clearing the composition space. The filter suppresses only the composing-space input notification, leaving the native edit and real-text events intact. Native V11 testing captured seven Chinese input events after filtering, including repeated empty-editor tests; the user reports normal input.
 
-### Also unresolved: Telegram Web
-
-The user also reports missing committed Chinese text in Telegram Web. Passive monitoring with V11 captured removal of the space used during composition and composition restarting on subsequent keystrokes. English input worked, and Chinese input later succeeded with existing English text. The page title was only 12 UTF-16 units, with no observed restart of the IME process. The event pattern resembles the Gemini case, but a shared root cause has not been established. **No Telegram fix is included.** See [known issues](docs/known-issues.zh-TW.md).
+This is initial validation, not proof that every intermittent failure is resolved. The filter targets the Traditional Chinese prompt labeled 「向 Gemini 提問」. Other UI languages, long-term stability and V12/V13 remain unverified. Some earlier successful commits also followed placeholder removal, so a universal root cause is not established. These observations differ from the X/Threads long-title crash. See [known issues and validation limits](docs/known-issues.zh-TW.md).
 
 ## Install
 
@@ -37,9 +35,11 @@ Edge supports the same loading workflow through `edge://extensions`. Only Chrome
 
 ## Privacy
 
-The extension reads and changes only the page title. It does not read editor contents, record keystrokes, access the clipboard, store data, or make network requests. Its input-event listeners only trigger a title-length check and do not inspect event text or cancel events. Site access is limited to the domains in `manifest.json`; no additional extension API permissions are requested.
+The X/Threads script reads and changes page titles. The Telegram script reads the target message editor's current text to detect composition whitespace; the Gmail script checks the target Gemini input event for its placeholder space. None of this text or event data is recorded, stored or transmitted. No clipboard, account or cookie access, keystroke logging, storage or network requests are used.
 
-Disabling or removing the extension and reloading the page restores the website's original title behavior.
+Version 0.2.0 expands content-script access to Telegram Web K and Gmail. No additional extension API permissions are requested. Telegram/Gmail scripts run in the MAIN world to handle page composition behavior. The Gmail script does not inspect mail bodies or ordinary mail editors.
+
+Disabling or removing the extension and reloading the page restores the website's original title and editor behavior.
 
 ## Development
 

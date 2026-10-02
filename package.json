@@ -1,14 +1,14 @@
 {
   "name": "natural-ime-v11-title-guard",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "private": true,
-  "description": "Long page-title workaround for Natural Chinese IME V11–V13",
+  "description": "Web compatibility workarounds for Natural Chinese IME V11–V13",
   "license": "MIT",
   "engines": {
     "node": "^20.19.0 || ^22.13.0 || >=24.0.0"
   },
   "scripts": {
-    "test": "node --check extension/title-guard.js && node --test tests/*.test.cjs",
+    "test": "node --check extension/title-guard.js && node --check extension/telegram-composition-guard.js && node --check extension/gmail-composition-filter.js && node --test tests/*.test.cjs",
     "package": "node scripts/package.cjs"
   },
   "devDependencies": {

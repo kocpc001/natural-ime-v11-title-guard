@@ -10,6 +10,8 @@ const prefix = 'natural-ime-v11-title-guard/';
 const files = [
   ['manifest.json', 'extension/manifest.json'],
   ['title-guard.js', 'extension/title-guard.js'],
+  ['telegram-composition-guard.js', 'extension/telegram-composition-guard.js'],
+  ['gmail-composition-filter.js', 'extension/gmail-composition-filter.js'],
   ['LICENSE', 'LICENSE'],
   ['README.md', 'README.md'],
   ['README.en.md', 'README.en.md'],
