@@ -14,7 +14,8 @@ const files = [
   ['README.md', 'README.md'],
   ['README.en.md', 'README.en.md'],
   ['CHANGELOG.md', 'CHANGELOG.md'],
-  ['docs/diagnosis.zh-TW.md', 'docs/diagnosis.zh-TW.md']
+  ['docs/diagnosis.zh-TW.md', 'docs/diagnosis.zh-TW.md'],
+  ['docs/known-issues.zh-TW.md', 'docs/known-issues.zh-TW.md']
 ];
 const crcTable = Array.from({ length: 256 }, (_, n) => {
   let c = n;
